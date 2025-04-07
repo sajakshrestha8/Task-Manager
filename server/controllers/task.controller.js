@@ -1,5 +1,7 @@
+const { where } = require("sequelize");
 const connection = require("../config/database/connection");
 const task = require("../models/task");
+const user = require("../models/user");
 
 const TaskController = {
   createNewTask: async (request, response) => {
@@ -14,6 +16,7 @@ const TaskController = {
           });
         })
         .then((data) => {
+          console.log(data);
           response.send(data);
         });
     } catch (error) {
@@ -28,6 +31,9 @@ const TaskController = {
         .then(() => {
           return task.findAll({
             attributes: ["Id", "Title", "Description"],
+            where: {
+              Id: request.id,
+            },
           });
         })
         .then((data) => {

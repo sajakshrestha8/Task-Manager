@@ -1,8 +1,8 @@
-const { response } = require("express");
 const connection = require("../config/database/connection");
 const user = require("../models/user");
 const { where } = require("sequelize");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const UserController = {
   RegisterUser: async (request, response) => {
@@ -41,12 +41,18 @@ const UserController = {
       } else {
         let hashPass = await bcrypt.compare(password, User.Password);
 
-        console.log(hashPass);
-        if (hashPass) {
-          response.send("login successfull");
-        } else {
-          response.send("Wrong password");
+        if (!hashPass) {
+          return response.send("Wrong Password");
         }
+
+        const token = jwt.sign({ Email: User.id }, "sajak", {
+          expiresIn: "1hr",
+        });
+
+        return response.json({
+          message: "Login Successfull",
+          token: token,
+        });
       }
     } catch (error) {
       console.log(error);
