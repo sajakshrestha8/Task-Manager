@@ -1,18 +1,12 @@
-import { useEffect, useState } from "react";
-import { Outlet } from "react-router-dom";
-import Login from "../assets/Pages/login";
-
+import { Navigate, Outlet } from "react-router-dom";
 const ProtectedRoute = () => {
-  const [auth, setAuth] = useState(localStorage.getItem("token"));
+  const isAuth = localStorage.getItem("token");
 
-  const checkAuth = () => {
-    setAuth(localStorage.getItem("token"));
-  };
+  if (!isAuth) {
+    return <Navigate to={"/login"} />;
+  }
 
-  useEffect(() => {
-    window.addEventListener("storage", checkAuth);
-  }, []);
-  return <>{auth ? <Outlet /> : <Login checkAuth={checkAuth} />}</>;
+  return <Outlet />;
 };
 
 export default ProtectedRoute;

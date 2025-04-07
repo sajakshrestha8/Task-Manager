@@ -1,27 +1,35 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-interface props {
-  checkAuth?: () => void;
-}
-
-const Login = (props: props) => {
+const Login = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
 
   const handleLogin = async () => {
-    const res = await axios.post("http://localhost:8000/user/login", {
-      email: email,
-      password: password,
-    });
+    try {
+      const res = await axios.post("http://localhost:8000/user/login", {
+        email: email,
+        password: password,
+      });
 
-    const token = res.data.token;
-    localStorage.setItem("token", token);
+      const token = res.data.token;
+      localStorage.setItem("token", token);
 
-    props?.checkAuth?.();
+      navigate("/");
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        console.log(error);
+        setErrorMessage(error.response?.data);
+      }
+    }
   };
+
   return (
     <>
+      {errorMessage ? <div className="text-red">{errorMessage}</div> : null}
       <form action="">
         <label htmlFor="email">Enter the Email</label>
         <input
