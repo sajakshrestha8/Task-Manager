@@ -9,13 +9,34 @@ const UserController = {
     const { username, email, password } = request.body;
     const hashPass = await bcrypt.hash(password, 10);
     try {
-      return await user.create({
+      let verifyEmail = await user.findOne({
+        where: {
+          Email: email,
+        },
+      });
+
+      if (verifyEmail) {
+        throw new Error("Email already registered");
+      }
+
+      console.log(verifyEmail);
+      const data = await user.create({
         UserName: username,
         Email: email,
         Password: hashPass,
       });
+
+      return response.status(200).json({
+        message: "User created Successfully",
+        data: {
+          id: data.id,
+          email: data.Email,
+        },
+      });
     } catch (error) {
-      console.log(error);
+      if (error instanceof Error) {
+        response.status(409).send(error.message);
+      }
     }
   },
 
