@@ -13,7 +13,7 @@ const verifyToken = (request, response, next) => {
     request.id = verified.Email;
     next();
   } catch (error) {
-    response.json({
+    response.status(403).json({
       message: "Something went wrong",
       error: error,
     });

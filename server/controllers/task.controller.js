@@ -30,9 +30,9 @@ const TaskController = {
         include: task,
       });
 
-      response.send(data.Tasks);
+      response.status(200).send(data.Tasks);
     } catch (error) {
-      console.log(error);
+      return response.status(500).send(error);
     }
   },
 

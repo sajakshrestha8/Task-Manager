@@ -30,24 +30,28 @@ const UserController = {
       });
 
       if (!User) {
-        return response.send("User not found");
-      } else {
-        let hashPass = await bcrypt.compare(password, User.Password);
-
-        if (!hashPass) {
-          return response.send("Wrong Password");
-        }
-
-        const token = jwt.sign({ Email: User.id }, "sajak", {
-          expiresIn: "1hr",
-        });
-
-        return response.json({
-          message: "Login Successfull",
-          token: token,
-        });
+        throw new Error("Invalid credentcal");
       }
+
+      let hashPass = await bcrypt.compare(password, User.Password);
+
+      if (!hashPass) {
+        throw new Error("Invalid credentcal");
+      }
+
+      const token = jwt.sign({ Email: User.id }, "sajak", {
+        expiresIn: "1hr",
+      });
+
+      return response.json({
+        message: "Login Successfull",
+        token: token,
+      });
     } catch (error) {
+      if (error instanceof Error) {
+        return response.status(403).send(error.message);
+      }
+
       console.log(error);
     }
   },
