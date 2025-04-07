@@ -1,5 +1,6 @@
 const sequelize = require("sequelize");
 const connection = require("../config/database/connection");
+const user = require("./user");
 
 const task = connection.define("Task", {
   Id: {
@@ -17,6 +18,10 @@ const task = connection.define("Task", {
     type: sequelize.STRING,
     allowNull: false,
   },
+});
+
+user.hasMany(task, {
+  foreignKeys: "UserId",
 });
 
 module.exports = task;

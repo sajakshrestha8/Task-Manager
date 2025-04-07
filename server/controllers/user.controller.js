@@ -9,18 +9,11 @@ const UserController = {
     const { username, email, password } = request.body;
     const hashPass = await bcrypt.hash(password, 10);
     try {
-      await connection
-        .sync()
-        .then(() => {
-          return user.create({
-            UserName: username,
-            Email: email,
-            Password: hashPass,
-          });
-        })
-        .then((data) => {
-          response.send(data);
-        });
+      return await user.create({
+        UserName: username,
+        Email: email,
+        Password: hashPass,
+      });
     } catch (error) {
       console.log(error);
     }

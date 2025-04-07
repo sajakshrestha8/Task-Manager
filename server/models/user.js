@@ -1,5 +1,6 @@
 const sequelize = require("sequelize");
 const connection = require("../config/database/connection");
+const task = require("./task");
 
 const user = connection.define("User", {
   UserName: {

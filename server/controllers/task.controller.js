@@ -6,19 +6,17 @@ const user = require("../models/user");
 const TaskController = {
   createNewTask: async (request, response) => {
     const { title, description } = request.body;
+    const { id } = request;
+
+    if (!id) response.sendStatus(500);
     try {
-      await connection
-        .sync()
-        .then(() => {
-          return task.create({
-            Title: title,
-            Description: description,
-          });
-        })
-        .then((data) => {
-          console.log(data);
-          response.send(data);
-        });
+      const createdData = await task.create({
+        Title: title,
+        Description: description,
+        UserId: id,
+      });
+
+      return response.send(createdData);
     } catch (error) {
       console.log(error);
     }
@@ -26,39 +24,36 @@ const TaskController = {
 
   getAllTask: async (request, response) => {
     try {
-      await connection
-        .sync()
-        .then(() => {
-          return task.findAll({
-            attributes: ["Id", "Title", "Description"],
-            where: {
-              Id: request.id,
-            },
-          });
-        })
-        .then((data) => {
-          response.send(data);
-        });
+      const { id } = request;
+
+      const data = await user.findByPk(id, {
+        include: task,
+      });
+
+      response.send(data.Tasks);
     } catch (error) {
       console.log(error);
     }
   },
 
   deleteTask: async (request, response) => {
-    const { id } = request.params;
+    const { id: taskId } = request.params;
+    const { id: userId } = request;
     try {
-      await connection
-        .sync()
-        .then(() => {
-          return task.destroy({
-            where: {
-              Id: id,
-            },
-          });
-        })
-        .then(() => {
-          response.json("task deleted successfully");
-        });
+      const validTask = await task.findByPk(taskId);
+
+      if (userId !== validTask.UserId)
+        return response
+          .status(401)
+          .send("You are not allowed to delete this data");
+
+      await task.destroy({
+        where: {
+          Id: taskId,
+        },
+      });
+
+      return response.send("Data removed successfully");
     } catch (error) {
       console.log(error);
     }
