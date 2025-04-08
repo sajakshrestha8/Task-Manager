@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import axios, { AxiosError } from "axios";
+import { URL } from "@/constants/enum";
+import { login } from "@/service/login";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Bounce, toast, ToastContainer } from "react-toastify";
@@ -12,22 +13,11 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleLogin = async () => {
-    try {
-      const res = await axios.post("http://localhost:8000/user/login", {
-        email: email,
-        password: password,
-      });
+    console.log(URL);
+    const result = await login(navigate, email, password);
+    console.log(result);
 
-      const token = res.data.token;
-      localStorage.setItem("token", token);
-
-      navigate("/");
-    } catch (error) {
-      if (error instanceof AxiosError) {
-        console.log(error);
-        setErrorMessage(error.response?.data);
-      }
-    }
+    setErrorMessage(result);
   };
 
   const notify = () => toast.warn(errorMessage);
@@ -40,7 +30,6 @@ const Login = () => {
             action=""
             onSubmit={(e) => {
               e.preventDefault();
-
               handleLogin();
             }}
           >
@@ -54,25 +43,6 @@ const Login = () => {
                     Enter your email below to Login an account
                   </label>
                 </div>
-              </div>
-              <div className="grid grid-cols-2 place-content-evenly gap-2 ">
-                <Button
-                  className="inline-flex items-center justify-center px-4 py-2 border border-input rounded-md bg-white text-black hover:bg-accent cursor-not-allowed"
-                  disabled
-                >
-                  Github
-                </Button>
-                <Button
-                  className="inline-flex items-center justify-center px-4 py-2 border border-input rounded-md bg-white text-black hover:bg-accent"
-                  disabled
-                >
-                  Google
-                </Button>
-              </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-card px-2 text-muted-foreground">
-                  Or continue with
-                </span>
               </div>
               <div className="grid gap-2">
                 <label
@@ -129,7 +99,7 @@ const Login = () => {
                 />
               </div>
               <div>
-                Dont have an account? <Link to={"/signup"}>SignUp</Link>
+                Dont have an account? <Link to={"/signup"}>Sign up</Link>
               </div>
             </div>
           </form>

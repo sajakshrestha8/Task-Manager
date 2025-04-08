@@ -13,10 +13,16 @@ const task = connection.define("Task", {
   Title: {
     type: sequelize.STRING,
     allowNull: false,
+    validate: {
+      len: [1, 255],
+    },
   },
   Description: {
     type: sequelize.STRING,
     allowNull: false,
+    validate: {
+      len: [1, 500],
+    },
   },
 });
 

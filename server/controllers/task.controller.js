@@ -1,4 +1,4 @@
-const { where } = require("sequelize");
+const { where, SequelizeScopeError, Sequelize } = require("sequelize");
 const connection = require("../config/database/connection");
 const task = require("../models/task");
 const user = require("../models/user");
@@ -19,6 +19,14 @@ const TaskController = {
       return response.send(createdData);
     } catch (error) {
       console.log(error);
+      if (error instanceof Error) {
+        return response.status(400).send({
+          message: error.message,
+        });
+      }
+      return response.status(500).send({
+        message: "something went wrong",
+      });
     }
   },
 
