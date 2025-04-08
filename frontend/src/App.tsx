@@ -18,6 +18,7 @@ import {
   AlertDialogTrigger,
 } from "./components/ui/alert-dialog";
 import { AlertDialogDescription } from "@radix-ui/react-alert-dialog";
+import { AxiosError } from "axios";
 
 export interface ITaskResponse {
   Id: number;
@@ -29,9 +30,16 @@ const App = () => {
   const [task, setTask] = useState<ITaskResponse[] | []>([]);
   const navigate = useNavigate();
   const loadData = useCallback(async () => {
-    const result = await fetchData(navigate);
-    setTask(result);
-    console.log(result);
+    try {
+      const result = await fetchData();
+      setTask(result);
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        if (error.status === 403) {
+          navigate("/login");
+        }
+      }
+    }
   }, [navigate]);
 
   useEffect(() => {

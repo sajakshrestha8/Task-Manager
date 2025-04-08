@@ -1,8 +1,8 @@
 import { Route, Routes } from "react-router-dom";
 import App from "./App";
-import NotFound from "./assets/Pages/NotFound";
-import SignUp from "./assets/Pages/signup";
-import Login from "./assets/Pages/login";
+import NotFound from "./Pages/NotFound";
+import SignUp from "./Pages/signup";
+import Login from "./Pages/login";
 import ProtectedRoute from "./components/protectedRoute";
 
 const Router = () => {
