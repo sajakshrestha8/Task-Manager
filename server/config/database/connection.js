@@ -3,7 +3,7 @@ require("dotenv").config();
 
 const connection = new Sequelize(
   process.env.DB_NAME,
-  process.env.USERNAME,
+  process.env.USER_NAME,
   process.env.PASSWORD,
   {
     dialect: process.env.DIALECT,
