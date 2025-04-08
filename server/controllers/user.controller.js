@@ -71,7 +71,7 @@ const UserController = {
       });
     } catch (error) {
       if (error instanceof Error) {
-        return response.status(403).send(error.message);
+        return response.status(403).send({ message: error.message });
       }
 
       console.log(error);
