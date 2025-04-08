@@ -49,13 +49,13 @@ const DataTable = ({ loadData, task }: props) => {
   };
 
   return (
-    <Table className="table-fixed">
+    <Table className="table-fixed text-center border border-black-500">
       <TableCaption>List of tasks</TableCaption>
       <TableHeader>
         <TableRow>
-          <TableHead>Title</TableHead>
-          <TableHead>Description</TableHead>
-          <TableHead>Action</TableHead>
+          <TableHead className="text-center">Title</TableHead>
+          <TableHead className="text-center">Description</TableHead>
+          <TableHead className="text-center">Action</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>

@@ -90,7 +90,7 @@ function CreateTask({ loadData }: props) {
                 <AlertDescription>{taskErrorMessage}</AlertDescription>
               </Alert>
             ) : null}
-            <div className="mb-2">
+            <div className="mb-2 grid gap-1">
               <label htmlFor="title">
                 Title <span className="text-red-500">*</span>
               </label>
@@ -104,7 +104,7 @@ function CreateTask({ loadData }: props) {
                 }}
               />
             </div>
-            <div className="mb-4">
+            <div className="mb-4 grid gap-1">
               <label htmlFor="title">
                 Description{" "}
                 <span className="text-xs italic text-gray-500">(optional)</span>

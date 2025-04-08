@@ -17,6 +17,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "./components/ui/alert-dialog";
+import { AlertDialogDescription } from "@radix-ui/react-alert-dialog";
 
 export interface ITaskResponse {
   Id: number;
@@ -41,7 +42,7 @@ const App = () => {
     <>
       <div className="max-w-7xl m-auto mt-10">
         <div className="flex flex-wrap justify-between">
-          <h1>My app</h1>
+          <label className="text-xl font-bold">MyTasks</label>
 
           <AlertDialog>
             <AlertDialogTrigger>
@@ -50,7 +51,10 @@ const App = () => {
 
             <AlertDialogContent>
               <AlertDialogHeader>
-                <AlertDialogTitle>Are you sure to Logout?</AlertDialogTitle>
+                <AlertDialogTitle>Logout Confirmation</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Are you sure you want to do logout?
+                </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel className="cursor-pointer">

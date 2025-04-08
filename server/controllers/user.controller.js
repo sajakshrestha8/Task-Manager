@@ -3,6 +3,7 @@ const user = require("../models/user");
 const { where } = require("sequelize");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 const UserController = {
   RegisterUser: async (request, response) => {
@@ -60,7 +61,7 @@ const UserController = {
         throw new Error("Invalid credentials");
       }
 
-      const token = jwt.sign({ Email: User.id }, "sajak", {
+      const token = jwt.sign({ Email: User.id }, process.env.JWT_SECRET_KEY, {
         expiresIn: "1hr",
       });
 

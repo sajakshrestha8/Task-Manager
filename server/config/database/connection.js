@@ -1,9 +1,15 @@
 const Sequelize = require("sequelize");
+require("dotenv").config();
 
-const connection = new Sequelize("TaskManager", "root", "", {
-  dialect: "mysql",
-  host: "localhost",
-});
+const connection = new Sequelize(
+  process.env.DB_NAME,
+  process.env.USERNAME,
+  process.env.PASSWORD,
+  {
+    dialect: process.env.DIALECT,
+    host: process.env.HOST,
+  }
+);
 
 connection
   .authenticate()
