@@ -16,6 +16,11 @@ const TaskController = {
         UserId: id,
       });
 
+      if (title === null)
+        return response
+          .status(404)
+          .send({ message: "Title shouldnot be empty" });
+
       return response.send(createdData);
     } catch (error) {
       console.log(error);

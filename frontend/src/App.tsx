@@ -19,6 +19,7 @@ import {
 } from "./components/ui/alert-dialog";
 import { AlertDialogDescription } from "@radix-ui/react-alert-dialog";
 import { AxiosError } from "axios";
+import Logo from "./assets/viber_image_2025-04-08_18-39-36-286.png";
 
 export interface ITaskResponse {
   Id: number;
@@ -49,12 +50,13 @@ const App = () => {
   return (
     <>
       <div className="max-w-7xl m-auto mt-10">
-        <div className="flex flex-wrap justify-between">
-          <label className="text-xl font-bold">MyTasks</label>
-
+        <div className="flex flex-wrap justify-between mb-8">
+          <img src={Logo} />
           <AlertDialog>
             <AlertDialogTrigger>
-              <Button variant={"outline"}>Logout &rarr;</Button>
+              <Button variant={"outline"} className="cursor-pointer">
+                Logout &rarr;
+              </Button>
             </AlertDialogTrigger>
 
             <AlertDialogContent>

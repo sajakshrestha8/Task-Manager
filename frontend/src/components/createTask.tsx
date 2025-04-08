@@ -68,7 +68,9 @@ function CreateTask({ loadData }: props) {
         }}
       >
         <DialogTrigger asChild>
-          <Button variant="outline">Create Task</Button>
+          <Button variant="outline" className="cursor-pointer">
+            Create Task
+          </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>

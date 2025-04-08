@@ -19,9 +19,9 @@ import {
   TableCell,
   Table,
 } from "./ui/table";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { ITaskResponse } from "@/App";
-import { URL } from "@/constants/enum";
+import { deleteData } from "@/service/deleteData";
 
 interface props {
   loadData: () => void;
@@ -30,17 +30,12 @@ interface props {
 
 const DataTable = ({ loadData, task }: props) => {
   console.log(task);
-  const TOKEN = `Bearer ${localStorage.getItem("token")}`;
 
   const handleDelete = async (id: number) => {
     try {
-      const res = await axios.delete(`${URL}/task/tasks/${id}`, {
-        headers: {
-          Authorization: TOKEN,
-        },
-      });
+      const result = await deleteData(id);
       loadData();
-      console.log(res);
+      console.log(result);
     } catch (error) {
       if (error instanceof AxiosError) {
         console.log(error.message);
@@ -66,7 +61,11 @@ const DataTable = ({ loadData, task }: props) => {
               <TableCell>{value.Description}</TableCell>
               <AlertDialog>
                 <AlertDialogTrigger>
-                  <Button variant={"destructive"} size={"sm"} className="mt-1">
+                  <Button
+                    variant={"destructive"}
+                    size={"sm"}
+                    className="mt-1 cursor-pointer"
+                  >
                     DELETE
                   </Button>
                 </AlertDialogTrigger>
