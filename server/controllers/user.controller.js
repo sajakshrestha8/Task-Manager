@@ -51,13 +51,13 @@ const UserController = {
       });
 
       if (!User) {
-        throw new Error("Invalid credentcal");
+        throw new Error("Invalid credentials");
       }
 
       let hashPass = await bcrypt.compare(password, User.Password);
 
       if (!hashPass) {
-        throw new Error("Invalid credentcal");
+        throw new Error("Invalid credentials");
       }
 
       const token = jwt.sign({ Email: User.id }, "sajak", {
