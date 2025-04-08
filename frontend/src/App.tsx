@@ -15,6 +15,26 @@ import {
 } from "./components/ui/dialog";
 import { useNavigate } from "react-router-dom";
 import { Input } from "./components/ui/input";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "./components/ui/table";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "./components/ui/alert-dialog";
 
 interface ITaskResponse {
   Id: number;
@@ -106,86 +126,115 @@ const App = () => {
 
   return (
     <>
-      <div className="flex justify-between">
-        <h4>my app</h4>
+      <div className="max-w-7xl m-auto mt-10">
+        <div className="flex justify-between">
+          <h1>My app</h1>
 
-        <Button
-          onClick={() => {
-            localStorage.clear();
-            navigate("/login");
-          }}
-        >
-          Logout
-        </Button>
-      </div>
-      <table>
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Description</th>
-          </tr>
-        </thead>
-        <tbody>
-          {task?.map((value, index) => {
-            return (
-              <tr key={index}>
-                <td>{value.Title}</td>
-                <td>{value.Description}</td>
-                <Button onClick={() => handleDelete(value.Id)}>Delete</Button>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-      <Dialog open={show} onOpenChange={() => setShow(!show)}>
-        <DialogTrigger asChild>
-          <Button variant="outline">Create Task</Button>
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>Create new task</DialogTitle>
-            <DialogDescription>
-              Enter the data on all the required fields
-            </DialogDescription>
-          </DialogHeader>
-          <form>
-            <label htmlFor="title">Title</label>
-            <Input
-              type="text"
-              name="title"
-              placeholder="Title of the task"
-              required
-              onChange={(e) => {
-                handleTitleInput(e.target.value);
-              }}
-            />
-            <label htmlFor="title">Description</label>
-            <Input
-              type="text"
-              placeholder="Description of the task"
-              required
-              onChange={(e) => {
-                handleDescInput(e.target.value);
-              }}
-            />
-          </form>
-          <DialogFooter className="sm:justify-end">
-            <DialogClose asChild>
-              <Button type="button" variant="secondary">
-                Close
+          <Button
+            onClick={() => {
+              localStorage.clear();
+              navigate("/login");
+            }}
+            variant={"outline"}
+          >
+            Logout &rarr;
+          </Button>
+        </div>
+        <Table>
+          <TableCaption>List of tasks</TableCaption>
+          <TableHeader>
+            <TableRow>
+              <TableHead>Title</TableHead>
+              <TableHead>Description</TableHead>
+              <TableHead>Action</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {task?.map((value, index) => {
+              return (
+                <TableRow key={index}>
+                  <TableCell>{value.Title}</TableCell>
+                  <TableCell>{value.Description}</TableCell>
+                  <AlertDialog>
+                    <AlertDialogTrigger>
+                      <Button variant={"destructive"}>DELETE</Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>
+                          Are you sure to delete?
+                        </AlertDialogTitle>
+                        <AlertDialogDescription>
+                          This action cannot be undone. This will permanently
+                          delete your task and remove your data from our
+                          servers.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                          onClick={() => handleDelete(value.Id)}
+                        >
+                          Continue
+                        </AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+        <Dialog open={show} onOpenChange={() => setShow(!show)}>
+          <DialogTrigger asChild>
+            <Button variant="outline">Create Task</Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>Create new task</DialogTitle>
+              <DialogDescription>
+                Enter the data on all the required fields
+              </DialogDescription>
+            </DialogHeader>
+            <form>
+              <label htmlFor="title">Title</label>
+              <Input
+                type="text"
+                name="title"
+                placeholder="Title of the task"
+                required
+                onChange={(e) => {
+                  handleTitleInput(e.target.value);
+                }}
+              />
+              <label htmlFor="title">Description</label>
+              <Input
+                type="text"
+                placeholder="Description of the task"
+                required
+                onChange={(e) => {
+                  handleDescInput(e.target.value);
+                }}
+              />
+            </form>
+            <DialogFooter className="sm:justify-end">
+              <DialogClose asChild>
+                <Button type="button" variant="secondary">
+                  Close
+                </Button>
+              </DialogClose>
+              <Button
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleAddTask();
+                }}
+              >
+                Add
               </Button>
-            </DialogClose>
-            <Button
-              onClick={(e) => {
-                e.preventDefault();
-                handleAddTask();
-              }}
-            >
-              Add
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </div>
     </>
   );
 };
