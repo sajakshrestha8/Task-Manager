@@ -1,7 +1,9 @@
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { login } from "@/service/login";
 import { AxiosError } from "axios";
+import { AlertCircle } from "lucide-react";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Bounce, toast, ToastContainer } from "react-toastify";
@@ -19,11 +21,12 @@ const Login = () => {
     } catch (error) {
       if (error instanceof AxiosError) {
         setErrorMessage(error.response?.data.message);
+        notify(error.response?.data?.message || "Something went wrong");
       }
     }
   };
 
-  const notify = () => toast.warn(errorMessage);
+  const notify = (message: string) => toast.warn(message);
 
   return (
     <>
@@ -36,6 +39,13 @@ const Login = () => {
               handleLogin();
             }}
           >
+            {errorMessage ? (
+              <Alert variant="destructive">
+                <AlertCircle className="h-4 w-4" />
+                <AlertTitle>Error</AlertTitle>
+                <AlertDescription>{errorMessage}</AlertDescription>
+              </Alert>
+            ) : null}
             <div className="grid gap-4">
               <div className="grid grid-row space-y-1">
                 <div className="font-semibold tracking-tight text-2xl">
@@ -84,9 +94,7 @@ const Login = () => {
                 />
               </div>
               <div className="flex items-center ">
-                <Button className="rounded-md w-full" onClick={notify}>
-                  Sign In
-                </Button>
+                <Button className="rounded-md w-full">Sign In</Button>
                 <ToastContainer
                   position="top-right"
                   autoClose={1000}
